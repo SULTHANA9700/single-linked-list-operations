@@ -1,0 +1,120 @@
+#include<stdio.h>
+#include<stdlib.h>    
+struct node{          
+int coeff;            
+int expo;       
+struct node* next;  
+}*temp,*newnode,*h1,*h2,*temp1,*temp2; 
+struct node* head=NULL;       
+struct node* tail=NULL;       
+struct node* create(struct node* head) 
+{                                       
+int co;                     
+int e,v;                      
+do{                         
+newnode=(struct node*)malloc(sizeof(struct node));  
+printf("enter coefficient");              
+scanf("%d",&co); 
+printf("enter exponent");    
+scanf("%d",&e);       
+newnode->coeff=co;        
+newnode->expo=e;       
+newnode->next=NULL;    
+if(head==NULL)       
+{                    
+head=newnode;     
+tail=newnode;    
+}               
+else           
+{     
+tail->next=newnode; 
+tail=newnode;        
+}                  
+printf("enter 1 to continue 0 to exit");  
+scanf("%d",&v);                   
+}while(v==1);        
+return head;          
+}                      
+void display(struct node* head) 
+{                                
+temp=head;                        
+while(temp!=NULL)                 
+{                                 
+printf("%dx^%d+",temp->coeff,temp->expo);
+temp=temp->next;                        
+}                                        
+}                                        
+void mul_poly(struct node* head1,struct node* head2)
+{                                                      
+temp1=head1;                                           
+temp2=head2;                                           
+struct node* head3=NULL;                               
+struct node* tail3=NULL;                               
+struct node* h3;                                       
+while(temp1!=NULL)                                     
+{                                                      
+temp2=head2;                                           
+while(temp2!=NULL)                                     
+{                                                      
+newnode=(struct node*)malloc(sizeof(struct node));     
+newnode->coeff=temp1->coeff*temp2->coeff;              
+newnode->expo=temp1->expo+temp2->expo;                 
+newnode->next=NULL;                                    
+if(head3==NULL)                                       
+{                                               
+head3=newnode;                                    
+tail3=newnode;                                    
+}                                                 
+else                                              
+{                                                 
+tail3->next=newnode;                              
+tail3=newnode;                                    
+}                                                 
+temp2=temp2->next;                                
+}                                                 
+temp1=temp1->next;                                
+}                                                 
+h3=head3;                                         
+display(h3);                                     
+printf("\nafter simplification\n");              
+removeduplicates(h3);                              
+display(h3);                                       
+}                                                  
+void removeduplicates(struct node* head)           
+{                                                  
+temp1=head;                                        
+while(temp1!=NULL&&temp1->next!=NULL)              
+{                                                  
+temp2=temp1;                                       
+while(temp2->next!=NULL)                           
+{                                                  
+if(temp1->expo==temp2->next->expo)                 
+{                                                  
+temp1->coeff=temp1->coeff+temp2->next->coeff;     
+temp1->expo=temp1->expo;                          
+temp2->next=temp2->next->next;                    
+}                                                 
+else                                              
+{                                                 
+temp2=temp2->next;                                
+}                                                 
+}                                                 
+temp1=temp1->next;                                
+}                                                 
+}                                                 
+void main()                                       
+{                                                 
+struct node* head1=NULL;                          
+struct node* head2=NULL;                          
+struct node* h1,*h2;                              
+printf("enter first polynomial\n");               
+h1=create(head1);                                 
+printf("\nenter second polynomial\n");            
+h2=create(head2);                                 
+printf("\nfirst polynomial is\n");                
+display(h1);                                      
+printf("\nsecond polynomial is\n");               
+display(h2);                                      
+printf("\nmultiplication is\n");                  
+mul_poly(h1,h2);                                  
+}                                           
